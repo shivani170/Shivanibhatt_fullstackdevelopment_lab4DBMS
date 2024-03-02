@@ -1,0 +1,65 @@
+-- Lab 4 - DBMS - file 1 : create_tables.sql
+
+--Set of queries to execute:
+-- creating table supplier
+CREATE TABLE Supplier (
+    SUPP_ID INT PRIMARY KEY,
+    SUPP_NAME VARCHAR(50) NOT NULL,
+    SUPP_CITY VARCHAR(50) NOT NULL,
+    SUPP_PHONE VARCHAR(50) NOT NULL
+);
+
+-- creating table Customer
+CREATE TABLE Customer (
+    CUS_ID INT PRIMARY KEY,
+    CUS_NAME VARCHAR(20) NOT NULL,
+    CUS_PHONE VARCHAR(10) NOT NULL,
+    CUS_CITY VARCHAR(30) NOT NULL,
+    CUS_GENDER CHAR
+);
+
+-- creating table Category
+CREATE TABLE Category (
+    CAT_ID INT PRIMARY KEY,
+    CAT_NAME VARCHAR(20) NOT NULL
+);
+
+
+// creating table Product
+CREATE TABLE Product (
+    PRO_ID INT PRIMARY KEY,
+    PRO_NAME VARCHAR(20) NOT NULL DEFAULT 'Dummy',
+    PRO_DESC VARCHAR(60),
+    CAT_ID INT,
+    FOREIGN KEY (CAT_ID) REFERENCES Category(CAT_ID)
+);
+
+-- Creating table Supplier_Pricing
+CREATE TABLE Supplier_Pricing (
+    PRICING_ID INT PRIMARY KEY,
+    PRO_ID INT,
+    SUPP_ID INT,
+    SUPP_PRICE INT DEFAULT 0,
+    FOREIGN KEY (PRO_ID) REFERENCES Product(PRO_ID),
+    FOREIGN KEY (SUPP_ID) REFERENCES Supplier(SUPP_ID)
+);
+
+-- creating table order
+CREATE TABLE Order (
+    ORD_ID INT PRIMARY KEY,
+    ORD_AMOUNT INT NOT NULL,
+    ORD_DATE DATE NOT NULL,
+    CUS_ID INT,
+    PRICING_ID INT,
+    FOREIGN KEY (CUS_ID) REFERENCES Customer(CUS_ID),
+    FOREIGN KEY (PRICING_ID) REFERENCES Supplier_Pricing(PRICING_ID)
+);
+
+-- creating table Rating
+CREATE TABLE Rating (
+    RAT_ID INT PRIMARY KEY,
+    ORD_ID INT,
+    RAT_RATSTARS INT NOT NULL,
+    FOREIGN KEY (ORD_ID) REFERENCES Order(ORD_ID)
+);
+
